@@ -103,5 +103,7 @@ sha256sum -c sha256sums.txt --ignore-missing
 
 The Athanor binaries are free to download and use — see [LICENSE](LICENSE.md). Athanor is not
 open source; this public repository exists to host releases. Bundled open-source components
-keep their own licenses — their texts are attached to each release (currently
-[zmx](https://github.com/neurosnap/zmx), MIT, which Athanor ships as a patched build).
+keep their own licenses — each release attaches a generated `THIRD_PARTY_NOTICES.md` derived
+from that release's actual embedded dependency set: the npm packages in the server binary and
+the web UI bundle, [zmx](https://github.com/neurosnap/zmx) (MIT, shipped as a patched build),
+the Deno runtime, and the Rust crates behind the desktop shells.
