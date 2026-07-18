@@ -30,6 +30,21 @@ server, the web UI, and its managed terminal-persistence backend — no other in
 Requirements on the host: `git`, `ps`, and a shell. First run creates `~/.athanor` (config,
 database, logs), persists port **7784**, and prints the URL to open.
 
+### One-command install
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/TranscendOfSypherus/athanor-releases/main/install.sh | sh
+```
+
+Downloads the latest release for your platform, verifies it against `sha256sums.txt`, and
+installs to `~/.athanor/bin/athanor`. Or with [Homebrew](https://brew.sh) (macOS, Linux, WSL2):
+
+```sh
+brew install transcendofsypherus/athanor/athanor
+```
+
+Then run `athanor` to start. The manual per-platform steps below do the same thing by hand.
+
 ### Linux
 
 Download the binary for your architecture from the
