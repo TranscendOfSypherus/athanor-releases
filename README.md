@@ -46,11 +46,18 @@ chmod +x ~/.athanor/bin/athanor
 
 Add `~/.athanor/bin` to your PATH to get plain `athanor` on the command line.
 
-### macOS
+### macOS (Apple Silicon)
 
-An Apple-silicon build is queued behind one server component gaining macOS support — it will
-appear in the release matrix here when it lands. Until then, run the server on a Linux machine
-or VM and open its URL from your Mac.
+```sh
+mkdir -p ~/.athanor/bin
+curl -fsSL -o ~/.athanor/bin/athanor \
+  https://github.com/TranscendOfSypherus/athanor-releases/releases/latest/download/athanor-mac-arm64
+chmod +x ~/.athanor/bin/athanor
+xattr -d com.apple.quarantine ~/.athanor/bin/athanor 2>/dev/null
+~/.athanor/bin/athanor serve
+```
+
+The binary is unsigned, hence the `xattr` line clearing Gatekeeper's quarantine flag.
 
 ### Windows (WSL2)
 
