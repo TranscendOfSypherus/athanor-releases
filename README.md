@@ -1,53 +1,85 @@
-# Athanor releases
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/athanor-dark.svg">
+    <img alt="Athanor sigil" src="assets/athanor.svg" width="280">
+  </picture>
+</p>
 
-This repo hosts release binaries for **Athanor** — a web-based platform for managing agentic
-coding sessions. Binaries only: the source repo is private, and this public repo exists so
-installs and `athanor upgrade` can fetch releases unauthenticated (public repo ≠ open source).
+# Athanor
 
-> Source-repo note: this file is the releases repo's README. It lives at
-> `docs/releases-repo-README.md` in the source tree; push changes to
-> `TranscendOfSypherus/athanor-releases` when it changes.
+> From the alchemical self-feeding furnace that maintains constant heat without manual fuelling.
+> Pronounced "ATH-uh-nor."
 
-## Install
+A web-based platform for managing agentic coding sessions, evolving upward into a collaborative
+software design and delivery environment — a modelled infinite canvas where humans and AI agents
+work the same living objects, and the repository becomes a compiled artifact of the canvas.
 
-Download the binary for your platform from the latest release, then:
+Today that means: persistent terminal sessions in your browser that survive page refreshes,
+server restarts, and disconnects — reattaching automatically with scrollback intact — with CLI
+coding agents (Claude Code, OpenCode, Codex, …) running inside them, and session state observed
+and organised by the platform.
+
+This repository hosts the **release binaries**. One self-contained `athanor` binary carries the
+server, the web UI, and its managed terminal-persistence backend — no other installs.
+
+> Source-repo note: this file and `assets/` mirror `docs/releases-repo-README.md` in the source
+> tree — edit there and push here.
+
+## Setup
+
+Requirements on the host: `git`, `ps`, and a shell. First run creates `~/.athanor` (config,
+database, logs), persists port **7784**, and prints the URL to open.
+
+### Linux
+
+Download the binary for your architecture from the
+[latest release](https://github.com/TranscendOfSypherus/athanor-releases/releases/latest)
+(`athanor-linux-x64` or `athanor-linux-arm64`):
 
 ```sh
 mkdir -p ~/.athanor/bin
-mv athanor-linux-x64 ~/.athanor/bin/athanor   # or athanor-linux-arm64
+curl -fsSL -o ~/.athanor/bin/athanor \
+  https://github.com/TranscendOfSypherus/athanor-releases/releases/latest/download/athanor-linux-x64
 chmod +x ~/.athanor/bin/athanor
 ~/.athanor/bin/athanor serve
 ```
 
-First run creates `~/.athanor` (config, database, managed zmx), persists port **7784**, and
-prints the URL. Add `~/.athanor/bin` to your PATH if you want plain `athanor` on the command
-line.
+Add `~/.athanor/bin` to your PATH to get plain `athanor` on the command line.
 
-The server runs on **linux x64/arm64** (macOS arm64 joins when its PTY port lands). On
-**Windows**, run the server inside WSL2 (or on a remote linux host) and open the printed URL
-from the Windows side — the server never runs natively on Windows.
+### macOS
 
-Requirements on the host: `git`, `ps`, a shell. Everything else (including the patched zmx
-that backs terminal persistence) is embedded in the binary.
+An Apple-silicon build is queued behind one server component gaining macOS support — it will
+appear in the release matrix here when it lands. Until then, run the server on a Linux machine
+or VM and open its URL from your Mac.
 
-## Upgrade
+### Windows (WSL2)
+
+The server is unix-only by design; on Windows it runs inside
+[WSL2](https://learn.microsoft.com/windows/wsl/install). Follow the Linux steps in your WSL2
+distribution, then open the printed URL (`http://127.0.0.1:7784`) in your Windows browser —
+WSL2 forwards localhost automatically.
+
+## Upgrading
 
 ```sh
-athanor upgrade    # downloads + verifies the latest release, then: restart athanor serve
+athanor upgrade    # download + verify the latest release, then restart athanor serve
 ```
 
-`athanor serve` prints a one-line notice on start when a newer release exists. Disable with
-`"checkUpdates": false` in `~/.athanor/config.json`. Upgrades are never automatic.
+`athanor serve` prints a one-line notice on start when a newer release exists — never more than
+that, and upgrades are never automatic. Disable the notice with `"checkUpdates": false` in
+`~/.athanor/config.json`.
 
-## Verify a download
+## Verifying a download
 
-`sha256sums.txt` in each release lists the checksums:
+Each release includes `sha256sums.txt`:
 
 ```sh
 sha256sum -c sha256sums.txt --ignore-missing
 ```
 
-## Third-party licenses
+## Licensing
 
-Each release ships the license texts of embedded third-party software (`zmx-LICENSE.txt` for
-[zmx](https://github.com/neurosnap/zmx), which Athanor embeds as a patched build).
+The Athanor binaries are free to download and use. Athanor is not open source; this public
+repository exists to host releases. Bundled open-source components keep their own licenses —
+their texts are attached to each release (currently [zmx](https://github.com/neurosnap/zmx),
+MIT, which Athanor ships as a patched build).
