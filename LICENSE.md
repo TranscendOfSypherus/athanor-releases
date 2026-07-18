@@ -1,5 +1,6 @@
-Copyright © 2026 Brenton Sheen (TranscendOfSypherus / BS-Tech, https://bs-tech.solutions/).
-All rights reserved.
+Copyright © 2026 Brenton Sheen
+([TranscendOfSypherus](https://github.com/TranscendOfSypherus) /
+[BS-Tech](https://bs-tech.solutions/)). All rights reserved.
 
 The Athanor binaries published in this repository's releases are provided free of charge for
 personal and internal business use. You may download and run them. You may not redistribute,
