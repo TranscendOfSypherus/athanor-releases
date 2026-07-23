@@ -65,8 +65,13 @@ base="https://github.com/$REPO/releases/download/$tag"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT INT TERM
 
+# Progress bar on interactive terminals (curl writes it to stderr, so piped
+# stdout stays clean); silent when stderr is redirected, e.g. CI logs.
+progress="-#"
+[ -t 2 ] || progress="-s"
+
 printf 'downloading %s %s ...\n' "$asset" "$tag"
-curl -fsSL --retry 3 -o "$tmp/$asset" "$base/$asset" ||
+curl -fSL "$progress" --retry 3 -o "$tmp/$asset" "$base/$asset" ||
   fail "download failed: $base/$asset"
 curl -fsSL --retry 3 -o "$tmp/sha256sums.txt" "$base/sha256sums.txt" ||
   fail "download failed: $base/sha256sums.txt"
@@ -90,8 +95,33 @@ fi
 mv -f "$bin_dir/athanor.new" "$bin_dir/athanor"
 
 printf 'installed athanor %s to %s\n' "$tag" "$bin_dir/athanor"
+# If the bin dir is already on PATH, say nothing; otherwise print the exact
+# snippet for the user's shell. Never edit profile files — the installer owns
+# only its own footprint (~/.athanor).
 case ":$PATH:" in
   *":$bin_dir:"*) ;;
-  *) printf 'add %s to your PATH to get plain `athanor` on the command line\n' "$bin_dir" ;;
+  *)
+    case "$(basename "${SHELL:-sh}")" in
+      fish)
+        profile="~/.config/fish/config.fish"
+        path_line="fish_add_path $bin_dir"
+        ;;
+      zsh)
+        profile="~/.zshrc"
+        path_line="export PATH=\"$bin_dir:\$PATH\""
+        ;;
+      bash)
+        profile="~/.bashrc"
+        path_line="export PATH=\"$bin_dir:\$PATH\""
+        ;;
+      *)
+        profile="your shell profile"
+        path_line="export PATH=\"$bin_dir:\$PATH\""
+        ;;
+    esac
+    printf '\n%s is not on your PATH. For this shell right now:\n' "$bin_dir"
+    printf '  %s\n' "$path_line"
+    printf 'and to make it permanent:\n'
+    printf '  echo '\''%s'\'' >> %s\n\n' "$path_line" "$profile" ;;
 esac
 printf 'run `athanor` to start\n'
