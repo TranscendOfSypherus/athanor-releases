@@ -84,8 +84,12 @@ WSL2 forwards localhost automatically.
 ## Upgrading
 
 ```sh
-athanor upgrade    # download + verify the latest release, then restart athanor serve
+athanor upgrade    # then: athanor restart
 ```
+
+One command whichever way you installed: a curl-script install downloads and verifies the
+latest release itself; a Homebrew install delegates to `brew update && brew upgrade athanor`
+on your behalf. Either way, `athanor restart` picks up the new version.
 
 `athanor serve` prints a one-line notice on start when a newer release exists — never more than
 that, and upgrades are never automatic. Disable the notice with `"checkUpdates": false` in
